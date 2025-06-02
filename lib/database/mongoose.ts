@@ -26,3 +26,26 @@ export const connectToDatabase = async () => {
 
     return cached.conn
 }
+
+// Function to check MongoDB connection status
+export const checkMongoDBConnection = async () => {
+    try {
+        await connectToDatabase();
+        const state = mongoose.connection.readyState;
+
+        switch (state) {
+            case 0:
+                return { status: 'disconnected', message: 'MongoDB is disconnected' };
+            case 1:
+                return { status: 'connected', message: 'MongoDB is connected successfully' };
+            case 2:
+                return { status: 'connecting', message: 'MongoDB is connecting' };
+            case 3:
+                return { status: 'disconnecting', message: 'MongoDB is disconnecting' };
+            default:
+                return { status: 'unknown', message: 'Unknown connection state' };
+        }
+    } catch (error) {
+        return { status: 'error', message: `Connection error: ${error}` };
+    }
+}
