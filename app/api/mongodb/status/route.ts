@@ -5,10 +5,10 @@ export async function GET() {
     try {
         const connectionStatus = await checkMongoDBConnection();
         return NextResponse.json(connectionStatus);
-    } catch (error) {
+    } catch {
         return NextResponse.json(
             { status: 'error', message: 'Failed to check MongoDB connection' },
             { status: 500 }
-        );
+        )
     }
 } 
